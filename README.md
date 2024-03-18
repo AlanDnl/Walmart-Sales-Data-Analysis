@@ -79,6 +79,30 @@ This analysis aims to uncover the different customers segments, purchase trends 
 9. Which day fo the week has the best avg ratings?
 10. Which day of the week has the best average ratings per branch?
 
+## Data Analysis
+Include some interesting code/features worked with
+```` sql
+--9.Fetch each product line and add a column to those product line showing "Good", "Bad". Good if its greater than average sales
+
+SELECT AVG(Total) AS avg_total FROM WalmartSalesData ------- The avg_total is 322.966749
+
+SELECT Total,
+       (CASE
+        WHEN Total > (SELECT AVG(Total) FROM WalmartSalesData) THEN 'Good'
+		ELSE 'Bad'
+		END) AS Qualification
+FROM WalmartSalesData
+--10.Which branch sold more products than average product sold?
+SELECT Branch, SUM(Quantity) AS products_sold FROM WalmartSalesData
+GROUP BY Branch
+HAVING SUM(Quantity) > (SELECT AVG(Quantity) FROM WalmartSalesData)
+-----------------------------------------------------------------------A	1859, C	1831, B	1820
+--11.What is the most common product line by gender?
+SELECT Product_line,Gender,COUNT(Product_line) AS product_count FROM WalmartSalesData
+GROUP BY Product_line, Gender
+ORDER BY product_count DESC
+````
+
 ## Revenue and Profit Calculations
 
 $ COGS = unitsPrice * quantity $
@@ -108,6 +132,10 @@ $ \text{VAT} = 5% * COGS\= 5% 320.53 = 16.0265 $
 $ total = VAT + COGS\= 16.0265 + 320.53 = 336.5565
 
 $ \text{Gross Margin Percentage} = \frac{\text{gross income}}{\text{total revenue}}\=\frac{16.0265}{336.5565} = 0.047619\\approx 4.7619% $
+
+## Data visualization
+![image](https://github.com/AlanDnl/Walmart-Sales-Data-Analysis/assets/150567418/af8d6fbb-4b46-4632-9767-c37e4408ed0e)
+
 
 ## References
 1. Walmart Sales Data Analysis With MySQL | MySQL Protfolio Project | Part 1 [https://www.youtube.com/watch?v=Qr1Go2gP8fo]
